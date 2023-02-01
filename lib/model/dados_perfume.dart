@@ -1,9 +1,9 @@
 class DadosPerfume {
   int id;
   String descricao;
-  List<String?>? notasTopo;
-  List<String?>? notasCoracao;
-  List<String?>? notasBase;
+  Map<String, String> notasTopo;
+  Map<String, String> notasCoracao;
+  Map<String, String> notasBase;
   List<String?>? acordes;
 
   DadosPerfume({

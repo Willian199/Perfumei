@@ -39,41 +39,16 @@ class HtmlDecodePage {
         .map((item) => item.text)
         .toList();
 
-    var notasCoracao = document
-        .getElementById("pyramid")
-        ?.nodes
-        .first
-        .nodes
-        .first
-        .nodes[1]
-        .nodes[4]
-        .nodes
-        .first
-        .nodes
-        .map((item) => item.text)
-        .toList();
-
-    var notasBase = document
-        .getElementById("pyramid")
-        ?.nodes
-        .first
-        .nodes
-        .first
-        .nodes[1]
-        .nodes[6]
-        .nodes
-        .first
-        .nodes
-        .map((item) => item.text)
-        .toList();
+    Node? nodeNotas =
+        document.getElementById("pyramid")?.nodes.first.nodes.first.nodes[1];
 
     return DadosPerfume(
       id: 1,
       descricao: _processarDescricao(document),
       acordes: acordes!,
-      notasTopo: _processarNotasTopo(document),
-      notasCoracao: notasCoracao,
-      notasBase: notasBase,
+      notasTopo: _processarNotasTopo(nodeNotas),
+      notasCoracao: _processarNotasCoracao(nodeNotas),
+      notasBase: _processarNotasBase(nodeNotas),
     );
   }
 
@@ -98,20 +73,33 @@ class HtmlDecodePage {
     }
   }
 
-  static List<String?>? _processarNotasTopo(Document document) {
-    return document
-        .getElementById("pyramid")
-        ?.nodes
-        .first
-        .nodes
-        .first
-        .nodes[1]
-        .nodes
-        .last
-        .nodes
-        .first
-        .nodes
-        .map((item) => item.text)
-        .toList();
+  static Map<String, String> _processarNotasTopo(Node? node) {
+    NodeList? nodeTopo = node?.nodes[2].nodes.first.nodes;
+
+    return _getItem(nodeTopo);
+  }
+
+  static Map<String, String> _processarNotasBase(Node? node) {
+    NodeList? nodeBase = node?.nodes[6].nodes.first.nodes;
+
+    return _getItem(nodeBase);
+  }
+
+  static Map<String, String> _processarNotasCoracao(Node? node) {
+    NodeList? nodeCoracao = node?.nodes[4].nodes.first.nodes;
+
+    return _getItem(nodeCoracao);
+  }
+
+  static Map<String, String> _getItem(NodeList? node) {
+    Map<String, String> map = {};
+    for (var item in node!) {
+      String nome = item.text!;
+      String link = item.firstChild?.nodes.first.attributes['src'] ?? '';
+
+      map[nome] = link;
+    }
+
+    return map;
   }
 }

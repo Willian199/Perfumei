@@ -5,19 +5,23 @@ import 'package:util/constantes/Double.dart';
 class CacheImagem extends StatelessWidget {
   final String imagemUrl;
   final IconData errorIcon;
+  final double height;
+  final double width;
   final Widget Function(BuildContext, ImageProvider) imagemBuilder;
   const CacheImagem({
     required this.imagemBuilder,
     required this.imagemUrl,
     this.errorIcon = Icons.error,
+    this.width = 140,
+    this.height = 140,
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 140,
-      height: 140,
+      width: width,
+      height: height,
       alignment: Alignment.centerLeft,
       child: Center(
         child: CachedNetworkImage(

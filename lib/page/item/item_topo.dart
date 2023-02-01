@@ -22,7 +22,7 @@ class ItemTopo extends StatelessWidget {
             if (controller.imagem?.isNotEmpty ?? false) {
               return Positioned(
                 right: Double.ZERO,
-                top: Double.ZERO,
+                top: Double.TRINTA,
                 child: SizedBox(
                   width: 190,
                   child: SlideAnimation(
@@ -33,13 +33,11 @@ class ItemTopo extends StatelessWidget {
                 ),
               );
             }
-            return Container(
-              height: 1,
-            );
+            return const SizedBox();
           }),
           Positioned(
             left: Double.ZERO,
-            top: Double.ZERO,
+            top: Double.SESSENTA,
             child: Padding(
               padding: const EdgeInsets.only(
                 left: Double.VINTE,
@@ -72,7 +70,7 @@ class ItemTopo extends StatelessWidget {
                     ),
                   ),
                   Container(
-                    width: Double.SETENTA,
+                    width: Double.OITENTA,
                     height: Double.TRINTA,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),

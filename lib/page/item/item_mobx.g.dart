@@ -41,6 +41,38 @@ mixin _$ObservableItem on _ObservableItemBase, Store {
     });
   }
 
+  late final _$tabSelecionadaAtom =
+      Atom(name: '_ObservableItemBase.tabSelecionada', context: context);
+
+  @override
+  Set<NotasEnum> get tabSelecionada {
+    _$tabSelecionadaAtom.reportRead();
+    return super.tabSelecionada;
+  }
+
+  @override
+  set tabSelecionada(Set<NotasEnum> value) {
+    _$tabSelecionadaAtom.reportWrite(value, super.tabSelecionada, () {
+      super.tabSelecionada = value;
+    });
+  }
+
+  late final _$pageAtom =
+      Atom(name: '_ObservableItemBase.page', context: context);
+
+  @override
+  int get page {
+    _$pageAtom.reportRead();
+    return super.page;
+  }
+
+  @override
+  set page(int value) {
+    _$pageAtom.reportWrite(value, super.page, () {
+      super.page = value;
+    });
+  }
+
   late final _$acordesAtom =
       Atom(name: '_ObservableItemBase.acordes', context: context);
 
@@ -61,13 +93,13 @@ mixin _$ObservableItem on _ObservableItemBase, Store {
       Atom(name: '_ObservableItemBase.notasTopo', context: context);
 
   @override
-  List<String?>? get notasTopo {
+  Map<String, String>? get notasTopo {
     _$notasTopoAtom.reportRead();
     return super.notasTopo;
   }
 
   @override
-  set notasTopo(List<String?>? value) {
+  set notasTopo(Map<String, String>? value) {
     _$notasTopoAtom.reportWrite(value, super.notasTopo, () {
       super.notasTopo = value;
     });
@@ -77,13 +109,13 @@ mixin _$ObservableItem on _ObservableItemBase, Store {
       Atom(name: '_ObservableItemBase.notasCoracao', context: context);
 
   @override
-  List<String?>? get notasCoracao {
+  Map<String, String>? get notasCoracao {
     _$notasCoracaoAtom.reportRead();
     return super.notasCoracao;
   }
 
   @override
-  set notasCoracao(List<String?>? value) {
+  set notasCoracao(Map<String, String>? value) {
     _$notasCoracaoAtom.reportWrite(value, super.notasCoracao, () {
       super.notasCoracao = value;
     });
@@ -93,13 +125,13 @@ mixin _$ObservableItem on _ObservableItemBase, Store {
       Atom(name: '_ObservableItemBase.notasBase', context: context);
 
   @override
-  List<String?>? get notasBase {
+  Map<String, String>? get notasBase {
     _$notasBaseAtom.reportRead();
     return super.notasBase;
   }
 
   @override
-  set notasBase(List<String?>? value) {
+  set notasBase(Map<String, String>? value) {
     _$notasBaseAtom.reportWrite(value, super.notasBase, () {
       super.notasBase = value;
     });
@@ -120,10 +152,34 @@ mixin _$ObservableItem on _ObservableItemBase, Store {
   }
 
   @override
+  dynamic pageChange(int value) {
+    final _$actionInfo = _$_ObservableItemBaseActionController.startAction(
+        name: '_ObservableItemBase.pageChange');
+    try {
+      return super.pageChange(value);
+    } finally {
+      _$_ObservableItemBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic changeTabSelecionada(Set<NotasEnum> value) {
+    final _$actionInfo = _$_ObservableItemBaseActionController.startAction(
+        name: '_ObservableItemBase.changeTabSelecionada');
+    try {
+      return super.changeTabSelecionada(value);
+    } finally {
+      _$_ObservableItemBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 imagem: ${imagem},
 descricao: ${descricao},
+tabSelecionada: ${tabSelecionada},
+page: ${page},
 acordes: ${acordes},
 notasTopo: ${notasTopo},
 notasCoracao: ${notasCoracao},

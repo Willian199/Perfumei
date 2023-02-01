@@ -38,6 +38,7 @@ class LigthTheme {
       inputDecoratorIsFilled: true,
       useTextTheme: true,
       thinBorderWidth: Double.DOIS,
+      appBarScrolledUnderElevation: 0
     ),
     keyColors: const FlexKeyColors(
       useSecondary: true,
@@ -48,7 +49,6 @@ class LigthTheme {
     visualDensity: FlexColorScheme.comfortablePlatformDensity,
     useMaterial3: true,
     swapLegacyOnMaterial3: true,
-    // To use the playground font, add GoogleFonts package and uncomment
     fontFamily: GoogleFonts.montserrat().fontFamily,
   );
 
@@ -74,17 +74,13 @@ class LigthTheme {
 
   static ThemeData getTheme() {
     return _default.copyWith(
-      appBarTheme: _default.appBarTheme.copyWith(
-        scrolledUnderElevation: Double.ZERO,
-        surfaceTintColor: Colors.transparent,
-      ),
       segmentedButtonTheme: _default.segmentedButtonTheme.copyWith(
         style: ButtonStyle(
           backgroundColor:
               MaterialStateProperty.resolveWith(_getColorSegmentedButton),
           iconColor:
               MaterialStateProperty.resolveWith(_getColorSegmentedButtonIcon),
-          animationDuration: const Duration(seconds: Integer.DEZ),
+          animationDuration: const Duration(seconds: Integer.DOIS),
         ),
       ),
       splashColor: _default.colorScheme.secondary,

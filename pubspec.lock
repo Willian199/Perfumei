@@ -301,18 +301,18 @@ packages:
     dependency: "direct main"
     description:
       name: flex_color_scheme
-      sha256: "03a0ad67cc224b20aab9f9a775a6cef76c8f884887902a2d94635c187858b31b"
+      sha256: "3cde2b6953707a5fb4f4dcfc2d65b998350484058b4861dfc98dee5b31ef67eb"
       url: "https://pub.dev"
     source: hosted
-    version: "6.1.2"
+    version: "7.0.0-dev.2"
   flex_seed_scheme:
     dependency: transitive
     description:
       name: flex_seed_scheme
-      sha256: "7ded1dbf0cef4d9d27a194ad021f4755cd4a82a3c5f10e803dca84d9843fd639"
+      sha256: e61950ccadfb8d43ce5cdef382e8f689edc053ce6b837e277539410ecfb3b3e5
       url: "https://pub.dev"
     source: hosted
-    version: "1.1.0"
+    version: "1.2.2"
   flutter:
     dependency: "direct main"
     description: flutter
@@ -1003,4 +1003,4 @@ packages:
     version: "3.1.1"
 sdks:
   dart: ">=2.18.6 <4.0.0"
-  flutter: ">=3.3.0"
+  flutter: ">=3.7.0"
