@@ -191,7 +191,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   void _abrirItem(GridModel itemSelecionado) async {
     ImageProvider provider = CachedNetworkImageProvider(itemSelecionado.capa);
 
-    provider.getBytes(context, format: ImageByteFormat.png).then((bytes) {
+    provider.getBytes(format: ImageByteFormat.png).then((bytes) {
       Navigator.push(context, MaterialPageRoute(builder: (_) {
         return ItemPage(
           item: itemSelecionado,

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:perfumei/model/GridModel.dart';
 import 'package:perfumei/page/componentes/slide_animation.dart';
+import 'package:perfumei/page/item/descricao.dart';
+import 'package:perfumei/page/item/imagem_perfume.dart';
 import 'package:perfumei/page/item/item_mobx.dart';
 import 'package:util/constantes/Double.dart';
 
@@ -18,23 +20,7 @@ class ItemTopo extends StatelessWidget {
       height: 500,
       child: Stack(
         children: [
-          Observer(builder: (_) {
-            if (controller.imagem?.isNotEmpty ?? false) {
-              return Positioned(
-                right: Double.ZERO,
-                top: Double.TRINTA,
-                child: SizedBox(
-                  width: 190,
-                  child: SlideAnimation(
-                    child: Image.memory(
-                      controller.imagem!,
-                    ),
-                  ),
-                ),
-              );
-            }
-            return const SizedBox();
-          }),
+          ImagemPerfume(controller: controller),
           Positioned(
             left: Double.ZERO,
             top: Double.SESSENTA,
@@ -99,24 +85,9 @@ class ItemTopo extends StatelessWidget {
                   Container(
                     padding: const EdgeInsets.only(top: Double.VINTE),
                     width: width - 80,
-                    child: Observer(builder: (_) {
-                      if (controller.descricao.isEmpty) {
-                        return const SizedBox();
-                      }
-                      return AnimatedOpacity(
-                        opacity: Double.UM,
-                        duration: const Duration(milliseconds: 500),
-                        child: Text(
-                          controller.descricao,
-                          style: TextStyle(
-                            fontWeight: FontWeight.w800,
-                            color: tema.colorScheme.primary,
-                            fontSize: Double.QUATORZE,
-                            height: 1.8,
-                          ),
-                        ),
-                      );
-                    }),
+                    child: Descricao(
+                      controller: controller,
+                    ),
                   ),
                 ],
               ),
