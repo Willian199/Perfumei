@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:perfumei/page/item/item_mobx.dart';
-import 'package:util/constantes/Double.dart';
 
 class Descricao extends StatelessWidget {
-  final ObservableItem controller;
   const Descricao({required this.controller, super.key});
+  final ObservableItem controller;
 
   @override
   Widget build(BuildContext context) {
@@ -14,14 +13,14 @@ class Descricao extends StatelessWidget {
         return const SizedBox();
       }
       return AnimatedOpacity(
-        opacity: Double.UM,
+        opacity: 1,
         duration: const Duration(milliseconds: 500),
         child: Text(
           controller.descricao,
           style: TextStyle(
             fontWeight: FontWeight.w800,
             color: Theme.of(context).colorScheme.primary,
-            fontSize: Double.QUATORZE,
+            fontSize: 14,
             height: 1.8,
           ),
         ),

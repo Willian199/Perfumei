@@ -2,11 +2,10 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 import 'package:perfumei/page/enum/NotasEnum.dart';
+import 'package:perfumei/page/util/components/Notificacao.dart';
 import 'package:perfumei/page/util/processo/html_decode_page.dart';
 import 'package:perfumei/page/util/processo/remove_background.dart';
-import 'package:util/componentes/Notificacao.dart';
-
-import 'package:util/services/RequestService.dart';
+import 'package:perfumei/page/util/services/request_service.dart';
 
 import '../../model/dados_perfume.dart';
 
@@ -44,13 +43,13 @@ abstract class _ObservableItemBase with Store {
   Map<String, String>? notasBase;
 
   @action
-  changeImagem(value) {
+  void changeImagem(Uint8List value) {
     imagem = value;
   }
 
   @action
-  pageChange(int value) {
-    NotasEnum? obj = NotasEnum.forIndex(value);
+  void pageChange(int value) {
+    final NotasEnum? obj = NotasEnum.forIndex(value);
 
     if (obj != null) {
       tabSelecionada = {obj};
@@ -59,16 +58,14 @@ abstract class _ObservableItemBase with Store {
   }
 
   @action
-  changeTabSelecionada(Set<NotasEnum> value) {
+  void changeTabSelecionada(Set<NotasEnum> value) {
     tabSelecionada = value;
     page = value.first.posicao;
     _navigate();
   }
 
   void _navigate() {
-    pageController.animateToPage(page,
-        duration: const Duration(milliseconds: 300),
-        curve: Curves.fastOutSlowIn);
+    pageController.animateToPage(page, duration: const Duration(milliseconds: 300), curve: Curves.fastOutSlowIn);
   }
 
   void clear() {
@@ -82,14 +79,11 @@ abstract class _ObservableItemBase with Store {
     tabSelecionada = {NotasEnum.TOPO};
   }
 
-  void carregarHtml(BuildContext context, String link) async {
-    RequestService request = RequestService();
-
-    var retorno = await request.getHtml(context: context, url: link);
+  void carregarHtml(String link) async {
+    final retorno = await RequestService.getHtml(url: link);
 
     //Cria uma Thread para evitar lag no app
-    DadosPerfume perfume =
-        await compute(HtmlDecodePage.decode, retorno.data.toString());
+    final DadosPerfume perfume = await compute(HtmlDecodePage.decode, retorno.data.toString());
 
     descricao = perfume.descricao;
 
@@ -105,6 +99,6 @@ abstract class _ObservableItemBase with Store {
   void carregarImagem(BuildContext context, Uint8List? bytes) async {
     imagem = await compute(RemoveBackGround.removeWhiteBackground, bytes);
 
-    Notificacao.close(context);
+    Notificacao.close();
   }
 }

@@ -1,21 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:perfumei/model/GridModel.dart';
-import 'package:perfumei/page/GridPage/GridRow.dart';
+import 'package:perfumei/model/grid_model.dart';
+import 'package:perfumei/page/grid_page/grid_row.dart';
 
 class GridPage extends StatefulWidget {
+  const GridPage({
+    required this.dados,
+    required this.onPressed,
+    super.key,
+    this.icon = Icons.error,
+  });
   final List dados;
   final IconData icon;
   final Function onPressed;
 
-  const GridPage({
-    super.key,
-    required this.dados,
-    required this.onPressed,
-    this.icon = Icons.error,
-  });
-
   @override
-  _GridPageState createState() => _GridPageState();
+  State<GridPage> createState() => _GridPageState();
 }
 
 class _GridPageState extends State<GridPage> {
@@ -27,7 +26,7 @@ class _GridPageState extends State<GridPage> {
   @override
   Widget build(BuildContext context) {
     int crossAxisCount = 1;
-    Size size = MediaQuery.of(context).size;
+    final Size size = MediaQuery.of(context).size;
     double childAspectRatio = size.height / size.width;
 
     if (MediaQuery.of(context).orientation == Orientation.landscape) {
@@ -37,11 +36,9 @@ class _GridPageState extends State<GridPage> {
 
     return GridView.builder(
         shrinkWrap: true,
-        scrollDirection: Axis.vertical,
         keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: crossAxisCount,
-          mainAxisSpacing: 0,
           crossAxisSpacing: 1.0,
           childAspectRatio: childAspectRatio + 0.2,
         ),

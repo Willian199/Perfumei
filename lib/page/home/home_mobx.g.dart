@@ -61,7 +61,7 @@ mixin _$ObservableHome on _ObservableHomeBase, Store {
       ActionController(name: '_ObservableHomeBase', context: context);
 
   @override
-  dynamic changePesquisa(dynamic value) {
+  void changePesquisa(String value) {
     final _$actionInfo = _$_ObservableHomeBaseActionController.startAction(
         name: '_ObservableHomeBase.changePesquisa');
     try {
@@ -72,7 +72,7 @@ mixin _$ObservableHome on _ObservableHomeBase, Store {
   }
 
   @override
-  dynamic changeTabSelecionada(dynamic value) {
+  void changeTabSelecionada(Set<Genero> value) {
     final _$actionInfo = _$_ObservableHomeBaseActionController.startAction(
         name: '_ObservableHomeBase.changeTabSelecionada');
     try {

@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:perfumei/model/GridModel.dart';
-import 'package:perfumei/page/componentes/slide_animation.dart';
+import 'package:perfumei/model/grid_model.dart';
 import 'package:perfumei/page/item/descricao.dart';
 import 'package:perfumei/page/item/imagem_perfume.dart';
 import 'package:perfumei/page/item/item_mobx.dart';
-import 'package:util/constantes/Double.dart';
 
 class ItemTopo extends StatelessWidget {
+  const ItemTopo({required this.controller, required this.item, super.key});
   final ObservableItem controller;
   final GridModel item;
-  const ItemTopo({required this.controller, required this.item, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -22,15 +19,14 @@ class ItemTopo extends StatelessWidget {
         children: [
           ImagemPerfume(controller: controller),
           Positioned(
-            left: Double.ZERO,
-            top: Double.SESSENTA,
+            left: 0,
+            top: 60,
             child: Padding(
               padding: const EdgeInsets.only(
-                left: Double.VINTE,
-                top: Double.VINTE,
+                left: 20,
+                top: 20,
               ),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
@@ -38,12 +34,12 @@ class ItemTopo extends StatelessWidget {
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       color: tema.colorScheme.tertiary,
-                      fontSize: Double.QUATORZE,
+                      fontSize: 14,
                     ),
                   ),
                   Container(
                     padding: const EdgeInsets.symmetric(
-                      vertical: Double.DEZ,
+                      vertical: 10,
                     ),
                     width: width,
                     child: Text(
@@ -51,39 +47,38 @@ class ItemTopo extends StatelessWidget {
                       style: TextStyle(
                         fontWeight: FontWeight.w800,
                         color: tema.colorScheme.primary,
-                        fontSize: Double.VINTE_CINCO,
+                        fontSize: 20,
                       ),
                     ),
                   ),
                   Container(
-                    width: Double.OITENTA,
-                    height: Double.TRINTA,
+                    width: 80,
+                    height: 30,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
                       color: tema.colorScheme.primaryContainer,
                     ),
                     child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon(
                           Icons.star,
                           color: tema.colorScheme.primary,
-                          size: Double.DOZE,
+                          size: 12,
                         ),
                         Text(
                           item.avaliacao,
                           style: TextStyle(
                             fontWeight: FontWeight.w800,
                             color: tema.colorScheme.primary,
-                            fontSize: Double.QUATORZE,
+                            fontSize: 14,
                           ),
                         ),
                       ],
                     ),
                   ),
                   Container(
-                    padding: const EdgeInsets.only(top: Double.VINTE),
+                    padding: const EdgeInsets.only(top: 20),
                     width: width - 80,
                     child: Descricao(
                       controller: controller,

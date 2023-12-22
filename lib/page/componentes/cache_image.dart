@@ -1,13 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:util/constantes/Double.dart';
 
 class CacheImagem extends StatelessWidget {
-  final String imagemUrl;
-  final IconData errorIcon;
-  final double height;
-  final double width;
-  final Widget Function(BuildContext, ImageProvider) imagemBuilder;
   const CacheImagem({
     required this.imagemBuilder,
     required this.imagemUrl,
@@ -16,6 +10,11 @@ class CacheImagem extends StatelessWidget {
     this.height = 140,
     super.key,
   });
+  final String imagemUrl;
+  final IconData errorIcon;
+  final double height;
+  final double width;
+  final Widget Function(BuildContext, ImageProvider) imagemBuilder;
 
   @override
   Widget build(BuildContext context) {
@@ -33,12 +32,12 @@ class CacheImagem extends StatelessWidget {
           errorWidget: (context, url, error) {
             return CircleAvatar(
               backgroundColor: Colors.transparent,
-              radius: Double.SETENTA,
+              radius: 70,
               foregroundColor: Colors.white,
               child: Icon(
                 errorIcon,
                 color: Theme.of(context).colorScheme.primary,
-                size: Double.SESSENTA,
+                size: 60,
               ),
             );
           },

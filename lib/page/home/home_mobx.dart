@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:mobx/mobx.dart';
 import 'package:perfumei/page/enum/GeneroEnum.dart';
-import 'package:util/componentes/Notificacao.dart';
-import 'package:util/componentes/NotificacaoPadrao.dart';
-import 'package:util/services/RequestService.dart';
+import 'package:perfumei/page/util/components/Notificacao.dart';
+import 'package:perfumei/page/util/components/notificacao_padrao.dart';
+import 'package:perfumei/page/util/services/request_service.dart';
 
 part 'home_mobx.g.dart';
 
@@ -23,70 +23,61 @@ abstract class _ObservableHomeBase with Store {
   List? dados;
 
   @action
-  changePesquisa(value) {
+  void changePesquisa(String value) {
     pesquisa = value;
   }
 
   @action
-  changeTabSelecionada(value) {
+  void changeTabSelecionada(Set<Genero> value) {
     tabSelecionada = value;
     pesquisaFocus.unfocus();
   }
 
   void carregarDados(context) async {
     pesquisaFocus.unfocus();
-    NotificacaoPadrao.carregando(context);
-    RequestService request = RequestService();
+    NotificacaoPadrao.carregando();
 
-    String attributesToRetrieve =
-        '["naslov","dizajner","godina","url.PT","rating","spol"]';
+    const String attributesToRetrieve = '["naslov","dizajner","godina","url.PT","rating","spol"]';
 
-    String facets =
+    const String facets =
         '"spol","dizajner","godina","ingredients.PT","rating_rounded","nosevi","osobine.PT","designer_meta.country","designer_meta.category","designer_meta.parent_company","designer_meta.main_activity"]';
 
-    String filter = tabSelecionada.first.nome.isEmpty
-        ? ''
-        : 'facetFilters=%5B%5B%22spol%3A${tabSelecionada.first.nome}%22%5D%5D&';
+    final String filter = tabSelecionada.first.nome.isEmpty ? '' : 'facetFilters=%5B%5B%22spol%3A${tabSelecionada.first.nome}%22%5D%5D&';
 
-    String highlight =
-        'highlightPostTag=__/ais-highlight__&highlightPreTag=__ais-highlight__';
+    const String highlight = 'highlightPostTag=__/ais-highlight__&highlightPreTag=__ais-highlight__';
 
-    String hitsPerPage = 'hitsPerPage=80&maxValuesPerFacet=10';
+    const String hitsPerPage = 'hitsPerPage=80&maxValuesPerFacet=10';
 
-    String page = 'page=0&tagFilters=';
+    const String page = 'page=0&tagFilters=';
 
-    String params =
-        'attributesToRetrieve=$attributesToRetrieve&facets=$facets&$filter';
+    String params = 'attributesToRetrieve=$attributesToRetrieve&facets=$facets&$filter';
 
     params += '$highlight&$hitsPerPage&$page';
 
     params += '&query=$pesquisa';
 
-    var obj = {
+    final obj = {
       "requests": [
         {"indexName": "fragrantica_perfumes", "params": params}
       ]
     };
 
-    String applicationId = 'FGVI612DFZ';
-    String applicatinoKey =
-        'Y2Q4NmU4ZTM1ZGQwYzRmYTk1NGQ4Y2IxMGFkZDFiMTAyZDJjZWI1ZWYzOGQ4NDljYjIzODNhNGZjYTU3ZDUwN3ZhbGlkVW50aWw9MTY3NTY0MzgxMw==';
+    const String applicationId = 'FGVI612DFZ';
+    const String applicatinoKey =
+        'N2NhNTAyOWYzYTI0NzkyMWEyMTg1MTQ2ZDM5OGM4NjkzMjQ1ZThkNWI4MzgwOWJkMjY5YWU1ZDkyYmJlMzE3YnZhbGlkVW50aWw9MTcwNDE1MDE1MA==';
 
-    var retorno = await request.post(
-      url:
-          '/1/indexes/*/queries?x-algolia-api-key=$applicatinoKey&x-algolia-application-id=$applicationId',
-      context: context,
-      data: obj,
-      usarCache: true,
-      callbackErro: (){
-        dados = [];
-      }
-    );
+    final retorno = await RequestService.post(
+        url: '/1/indexes/*/queries?x-algolia-api-key=$applicatinoKey&x-algolia-application-id=$applicationId',
+        data: obj,
+        usarCache: true,
+        callbackErro: () {
+          dados = [];
+        });
 
-    dados = retorno.data['results'][0]['hits'];
+    dados = retorno.data['results'][0]['hits'] as List;
 
     Future.delayed(const Duration(seconds: 1), () {
-      Notificacao.close(context);
+      Notificacao.close();
       pesquisaFocus.unfocus();
     });
   }

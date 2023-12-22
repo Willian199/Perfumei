@@ -1,24 +1,18 @@
 import 'dart:typed_data';
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:perfumei/model/GridModel.dart';
-import 'package:perfumei/page/componentes/cache_image.dart';
+import 'package:perfumei/model/grid_model.dart';
 import 'package:perfumei/page/enum/NotasEnum.dart';
 import 'package:perfumei/page/item/item_mobx.dart';
 import 'package:perfumei/page/item/item_nota.dart';
 import 'package:perfumei/page/item/item_topo.dart';
-import 'package:util/componentes/ButtonNeomorphism.dart';
-import 'package:util/componentes/NotificacaoPadrao.dart';
-import 'package:util/constantes/Double.dart';
+import 'package:perfumei/page/util/components/notificacao_padrao.dart';
 
 class ItemPage extends StatefulWidget {
+  const ItemPage({required this.item, this.bytes, super.key});
   final GridModel item;
   final Uint8List? bytes;
-  const ItemPage({required this.item, this.bytes, super.key});
 
   @override
   State<ItemPage> createState() => _ItemPageState();
@@ -32,8 +26,8 @@ class _ItemPageState extends State<ItemPage> {
     super.initState();
 
     Future.delayed(Duration.zero, () {
-      NotificacaoPadrao.carregando(context);
-      _observableItem.carregarHtml(context, widget.item.link);
+      NotificacaoPadrao.carregando();
+      _observableItem.carregarHtml(widget.item.link);
       _observableItem.carregarImagem(context, widget.bytes);
     });
   }
@@ -45,29 +39,16 @@ class _ItemPageState extends State<ItemPage> {
     _observableItem.clear();
   }
 
-  Widget _buildTitulo(String titulo) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: Double.QUINZE),
-      child: Text(
-        titulo,
-        textAlign: TextAlign.center,
-        style: const TextStyle(fontSize: Double.VINTE_CINCO),
-      ),
-    );
-  }
-
   ButtonSegment<NotasEnum> _makeSegmentedButton(NotasEnum nota) {
-    ThemeData tema = Theme.of(context);
+    final ThemeData tema = Theme.of(context);
     return ButtonSegment<NotasEnum>(
       value: nota,
       label: Text(
         nota.nome,
         style: TextStyle(
-          fontSize: Double.DEZESSEIS,
+          fontSize: 10,
           fontWeight: FontWeight.bold,
-          color: nota.posicao == _observableItem.tabSelecionada.first.posicao
-              ? tema.colorScheme.onPrimary
-              : tema.colorScheme.primary,
+          color: nota.posicao == _observableItem.tabSelecionada.first.posicao ? tema.colorScheme.onPrimary : tema.colorScheme.primary,
         ),
       ),
     );
@@ -76,18 +57,17 @@ class _ItemPageState extends State<ItemPage> {
   @override
   Widget build(BuildContext context) {
     final double width = MediaQuery.of(context).size.width;
-    ThemeData tema = Theme.of(context);
+    final ThemeData tema = Theme.of(context);
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         iconTheme: IconThemeData(
           color: tema.colorScheme.primary,
-          size: Double.TRINTA,
+          size: 30,
           shadows: [
             BoxShadow(
               color: tema.colorScheme.onPrimaryContainer,
-              offset: const Offset(0, 0),
               blurRadius: 20,
               spreadRadius: 10,
             ),
@@ -96,13 +76,10 @@ class _ItemPageState extends State<ItemPage> {
       ),
       body: Padding(
         padding: EdgeInsets.only(
-          top: Double.VINTE_CINCO,
-          left: MediaQuery.of(context).orientation == Orientation.portrait
-              ? Double.ZERO
-              : Double.TRINTA,
+          top: 25,
+          left: MediaQuery.of(context).orientation == Orientation.portrait ? 0 : 30,
         ),
         child: SingleChildScrollView(
-          scrollDirection: Axis.vertical,
           child: Column(
             children: [
               ItemTopo(
@@ -114,18 +91,17 @@ class _ItemPageState extends State<ItemPage> {
                   return const SizedBox();
                 }
                 return AnimatedOpacity(
-                  opacity: Double.UM,
+                  opacity: 1,
                   duration: const Duration(milliseconds: 500),
                   child: Container(
                     padding: const EdgeInsets.only(
-                      top: Double.DEZ,
-                      left: Double.DEZ,
-                      bottom: Double.DEZ,
-                      right: Double.DEZOITO,
+                      top: 10,
+                      left: 10,
+                      bottom: 10,
+                      right: 18,
                     ),
                     width: width,
                     child: SegmentedButton<NotasEnum>(
-                      emptySelectionAllowed: false,
                       segments: <ButtonSegment<NotasEnum>>[
                         _makeSegmentedButton(NotasEnum.TOPO),
                         _makeSegmentedButton(NotasEnum.CORACAO),
@@ -148,16 +124,13 @@ class _ItemPageState extends State<ItemPage> {
                   onPageChanged: _observableItem.pageChange,
                   children: [
                     Observer(
-                      builder: (_) =>
-                          ItemNota(lista: _observableItem.notasTopo),
+                      builder: (_) => ItemNota(lista: _observableItem.notasTopo),
                     ),
                     Observer(
-                      builder: (_) =>
-                          ItemNota(lista: _observableItem.notasCoracao),
+                      builder: (_) => ItemNota(lista: _observableItem.notasCoracao),
                     ),
                     Observer(
-                      builder: (_) =>
-                          ItemNota(lista: _observableItem.notasBase),
+                      builder: (_) => ItemNota(lista: _observableItem.notasBase),
                     ),
                   ],
                 ),

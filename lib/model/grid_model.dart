@@ -1,4 +1,15 @@
 class GridModel {
+  GridModel.fromJson(json) {
+    id = json["objectID"].toString();
+    capa = setImagem(json["objectID"].toString());
+    marca = json["dizajner"].toString();
+    anoLancamento = json["godina"].toString();
+    genero = setGenero(json["spol"].toString());
+    avaliacao = setAvaliacao(json['rating'].toString());
+    nome = setNome(json["naslov"].toString());
+    link = json["url"]["PT"][0].toString();
+  }
+
   late String id;
   late String nome;
   late String marca;
@@ -7,17 +18,6 @@ class GridModel {
   late String anoLancamento;
   late String avaliacao;
   late String link;
-
-  GridModel.fromJson(json) {
-    id = json["objectID"].toString();
-    capa = setImagem(json["objectID"].toString());
-    marca = json["dizajner"].toString();
-    anoLancamento = json["godina"].toString();
-    genero = setGenero(json["spol"]);
-    avaliacao = setAvaliacao(json['rating'].toString());
-    nome = setNome(json["naslov"]);
-    link = json["url"]["PT"][0];
-  }
 
   String setGenero(String info) {
     String retorno = '';
@@ -45,12 +45,11 @@ class GridModel {
         .replaceAll('Eau de Toilette', 'EDT')
         .replaceAll(marca, '')
         .replaceAll(anoLancamento, '')
-        .replaceAll('()', '').trim();
+        .replaceAll('()', '')
+        .trim();
   }
 
   String setAvaliacao(String avaliacao) {
-    return avaliacao == '0'
-        ? 'N/A'
-        : avaliacao.padRight(4, '0').substring(0, 4);
+    return avaliacao == '0' ? 'N/A' : avaliacao.padRight(4, '0').substring(0, 4);
   }
 }

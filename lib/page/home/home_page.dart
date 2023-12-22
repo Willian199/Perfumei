@@ -5,17 +5,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
-import 'package:perfumei/main.dart';
-import 'package:perfumei/model/GridModel.dart';
-import 'package:perfumei/page/GridPage/GridPage.dart';
+import 'package:perfumei/constants/injection_constants.dart';
+import 'package:perfumei/model/grid_model.dart';
 import 'package:perfumei/page/enum/GeneroEnum.dart';
+import 'package:perfumei/page/extensions/image_provider_extension.dart';
+import 'package:perfumei/page/grid_page/grid_page.dart';
 import 'package:perfumei/page/home/home_mobx.dart';
 import 'package:perfumei/page/item/item_page.dart';
-import 'package:util/componentes/Degrade.dart';
-import 'package:util/constantes/Double.dart';
-import 'package:util/fields/component/AlphaNumericField.dart';
-
-import 'package:perfumei/page/extensions/image_provider_extension.dart';
+import 'package:perfumei/page/util/components/Degrade.dart';
+import 'package:perfumei/page/util/components/alpha_numeric_field.dart';
+import 'package:perfumei/page/util/services/injection.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -60,15 +59,17 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    ThemeData tema = Theme.of(context);
-    darkMode = tema.brightness == Brightness.dark;
+    final ThemeData tema = Theme.of(context);
+
+    ddi.registerSingleton<bool>(() => tema.brightness == Brightness.dark, qualifierName: InjectionConstants.darkMode);
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
           'Perfumei',
           style: TextStyle(
             fontFamily: GoogleFonts.aladin().fontFamily,
-            fontSize: Double.TRINTA,
+            fontSize: 30,
           ),
         ),
       ),
@@ -82,9 +83,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
             children: [
               Container(
                 padding: const EdgeInsets.only(
-                  left: Double.DEZ,
-                  right: Double.DEZOITO,
-                  bottom: Double.VINTE,
+                  left: 10,
+                  right: 18,
+                  bottom: 20,
                 ),
                 child: Row(
                   children: [
@@ -93,7 +94,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                         controller: _controller.pesquisaController,
                         focus: _controller.pesquisaFocus,
                         cursorColor: tema.colorScheme.primary,
-                        permiteNumeros: true,
                         textStyle: TextStyle(color: tema.colorScheme.primary),
                         decoration: const InputDecoration(
                           prefixIcon: Icon(
@@ -108,16 +108,16 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(left: Double.DEZ),
+                      padding: const EdgeInsets.only(left: 10),
                       child: Container(
-                        height: Double.CINQUENTA,
-                        width: Double.CINQUENTA,
+                        height: 50,
+                        width: 50,
                         decoration: BoxDecoration(
                           color: Colors.lightBlue,
-                          borderRadius: BorderRadius.circular(Double.DEZ),
+                          borderRadius: BorderRadius.circular(10),
                         ),
                         child: InkWell(
-                          borderRadius: BorderRadius.circular(Double.DEZ),
+                          borderRadius: BorderRadius.circular(10),
                           onTap: () {
                             _animationController.reset();
                             _animationController.forward();
@@ -139,10 +139,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
               ),
               Observer(builder: (_) {
                 return Container(
-                  padding: const EdgeInsets.only(
-                      left: Double.DEZ,
-                      bottom: Double.DEZ,
-                      right: Double.DEZOITO),
+                  padding: const EdgeInsets.only(left: 10, bottom: 10, right: 18),
                   width: MediaQuery.of(context).size.width,
                   child: SegmentedButton<Genero>(
                     segments: <ButtonSegment<Genero>>[
@@ -189,7 +186,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   }
 
   void _abrirItem(GridModel itemSelecionado) async {
-    ImageProvider provider = CachedNetworkImageProvider(itemSelecionado.capa);
+    final ImageProvider provider = CachedNetworkImageProvider(itemSelecionado.capa);
 
     provider.getBytes(format: ImageByteFormat.png).then((bytes) {
       Navigator.push(context, MaterialPageRoute(builder: (_) {

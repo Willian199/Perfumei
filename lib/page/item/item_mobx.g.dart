@@ -141,7 +141,7 @@ mixin _$ObservableItem on _ObservableItemBase, Store {
       ActionController(name: '_ObservableItemBase', context: context);
 
   @override
-  dynamic changeImagem(dynamic value) {
+  void changeImagem(Uint8List value) {
     final _$actionInfo = _$_ObservableItemBaseActionController.startAction(
         name: '_ObservableItemBase.changeImagem');
     try {
@@ -152,7 +152,7 @@ mixin _$ObservableItem on _ObservableItemBase, Store {
   }
 
   @override
-  dynamic pageChange(int value) {
+  void pageChange(int value) {
     final _$actionInfo = _$_ObservableItemBaseActionController.startAction(
         name: '_ObservableItemBase.pageChange');
     try {
@@ -163,7 +163,7 @@ mixin _$ObservableItem on _ObservableItemBase, Store {
   }
 
   @override
-  dynamic changeTabSelecionada(Set<NotasEnum> value) {
+  void changeTabSelecionada(Set<NotasEnum> value) {
     final _$actionInfo = _$_ObservableItemBaseActionController.startAction(
         name: '_ObservableItemBase.changeTabSelecionada');
     try {

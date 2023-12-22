@@ -4,17 +4,17 @@ import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:perfumei/page/home/home_page.dart';
+import 'package:perfumei/page/util/services/injection.dart';
 import 'package:perfumei/theme/light.dart';
-import 'package:util/services/DataControl.dart';
-import 'package:wakelock/wakelock.dart';
+import 'package:wakelock_plus/wakelock_plus.dart';
 
-late bool darkMode;
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  var data = DataControl();
-  unawaited(Wakelock.enable());
 
-  data.url = 'https://fgvi612dfz-dsn.algolia.net';
+  unawaited(WakelockPlus.enable());
+
+  Injection.start();
 
   runApp(const MyApp());
 }
@@ -25,19 +25,9 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    ///Listener para remover o focus dos Textfield ao clicar fora do campo
-    ///Péssimo comportamento ao tentar editar o valor de um textfield
-    ///Listener(
-    ///onPointerDown: (_) {
-    /// FocusScopeNode currentFocus = FocusScope.of(context);
-    ///  if (!currentFocus.hasPrimaryFocus) {
-    ///    currentFocus.focusedChild?.unfocus();
-    ///  }
-    /// },
-    ///  child: MaterialApp();
-
     return MaterialApp(
       title: 'Perfumei',
+      navigatorKey: navigatorKey,
       debugShowCheckedModeBanner: false,
       //Git Request to make it default
       theme: LigthTheme.getTheme(),
