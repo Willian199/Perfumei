@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:perfumei/common/components/widgets/cache_image.dart';
+import 'package:perfumei/common/model/layout.dart';
+import 'package:perfumei/config/services/injection.dart';
 
 class ItemNota extends StatelessWidget {
   const ItemNota({required this.lista, super.key});
@@ -8,8 +10,7 @@ class ItemNota extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData tema = Theme.of(context);
-
+    final Layout layout = ddi<Layout>();
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10),
       child: Center(
@@ -38,13 +39,13 @@ class ItemNota extends StatelessWidget {
                           width: 100,
                           decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(50), boxShadow: [
                             BoxShadow(
-                              color: tema.colorScheme.onPrimaryContainer,
+                              color: layout.notaDownColor,
                               offset: const Offset(4, 4),
                               blurRadius: 15,
                               spreadRadius: 1,
                             ),
                             BoxShadow(
-                              color: tema.colorScheme.primaryContainer,
+                              color: layout.notaUpColor,
                               offset: const Offset(-4, -4),
                               blurRadius: 15,
                               spreadRadius: 1,

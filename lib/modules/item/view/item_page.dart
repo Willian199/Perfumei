@@ -5,6 +5,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:perfumei/common/components/notification/notificacao_padrao.dart';
 import 'package:perfumei/common/enum/notas_enum.dart';
 import 'package:perfumei/common/model/grid_model.dart';
+import 'package:perfumei/common/model/layout.dart';
 import 'package:perfumei/config/services/injection.dart';
 import 'package:perfumei/modules/item/mobx/item_mobx.dart';
 import 'package:perfumei/modules/item/widget/item_nota.dart';
@@ -21,6 +22,7 @@ class ItemPage extends StatefulWidget {
 
 class _ItemPageState extends State<ItemPage> {
   final ObservableItem _observableItem = ddi();
+  final Layout layout = ddi.get<Layout>();
 
   @override
   void initState() {
@@ -37,12 +39,11 @@ class _ItemPageState extends State<ItemPage> {
   void dispose() {
     super.dispose();
 
-    ddi.dispose<ObservableItem>();
     _observableItem.clear();
+    ddi.dispose<ObservableItem>();
   }
 
   ButtonSegment<NotasEnum> _makeSegmentedButton(NotasEnum nota) {
-    final ThemeData tema = Theme.of(context);
     return ButtonSegment<NotasEnum>(
       value: nota,
       label: Text(
@@ -50,7 +51,7 @@ class _ItemPageState extends State<ItemPage> {
         style: TextStyle(
           fontSize: 10,
           fontWeight: FontWeight.bold,
-          color: nota.posicao == _observableItem.tabSelecionada.first.posicao ? tema.colorScheme.onPrimary : tema.colorScheme.primary,
+          color: nota.posicao == _observableItem.tabSelecionada.first.posicao ? layout.segmentedButtonSelected : layout.segmentedButtonDeselected,
         ),
       ),
     );
@@ -58,7 +59,7 @@ class _ItemPageState extends State<ItemPage> {
 
   @override
   Widget build(BuildContext context) {
-    final double width = MediaQuery.of(context).size.width;
+    final double width = MediaQuery.sizeOf(context).width;
     final ThemeData tema = Theme.of(context);
     return Scaffold(
       extendBodyBehindAppBar: true,
@@ -117,23 +118,26 @@ class _ItemPageState extends State<ItemPage> {
                   ),
                 );
               }),
-              SizedBox(
-                width: width,
-                height: 200,
-                child: PageView(
-                  controller: _observableItem.pageController,
-                  onPageChanged: _observableItem.pageChange,
-                  children: [
-                    Observer(
-                      builder: (_) => ItemNota(lista: _observableItem.notasTopo),
-                    ),
-                    Observer(
-                      builder: (_) => ItemNota(lista: _observableItem.notasCoracao),
-                    ),
-                    Observer(
-                      builder: (_) => ItemNota(lista: _observableItem.notasBase),
-                    ),
-                  ],
+              Padding(
+                padding: const EdgeInsets.only(bottom: 20.0),
+                child: SizedBox(
+                  width: width,
+                  height: 210,
+                  child: PageView(
+                    controller: _observableItem.pageController,
+                    onPageChanged: _observableItem.pageChange,
+                    children: [
+                      Observer(
+                        builder: (_) => ItemNota(lista: _observableItem.notasTopo),
+                      ),
+                      Observer(
+                        builder: (_) => ItemNota(lista: _observableItem.notasCoracao),
+                      ),
+                      Observer(
+                        builder: (_) => ItemNota(lista: _observableItem.notasBase),
+                      ),
+                    ],
+                  ),
                 ),
               )
             ],

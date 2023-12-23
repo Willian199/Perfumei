@@ -56,7 +56,7 @@ class Notificacao {
     _isOpen = true;
 
     final ThemeData tema = Theme.of(ddi<GlobalKey<NavigatorState>>().currentContext!);
-    final bool darkMode = tema.brightness == Brightness.dark;
+    final bool darkMode = ddi.get<bool>(qualifierName: InjectionConstants.darkMode);
 
     Alert(
       context: ddi<GlobalKey<NavigatorState>>().currentContext!,
@@ -125,7 +125,7 @@ class Notificacao {
 
     if (buttonDefault) {
       final ThemeData tema = Theme.of(context);
-      final bool darkMode = tema.brightness == Brightness.dark;
+      final bool darkMode = ddi.get<bool>(qualifierName: InjectionConstants.darkMode);
 
       buttons = [
         DialogButton(
@@ -188,7 +188,7 @@ class Notificacao {
     }
 
     final ThemeData tema = Theme.of(ddi<GlobalKey<NavigatorState>>().currentContext!);
-    final bool darkMode = tema.brightness == Brightness.dark;
+    final bool darkMode = ddi.get<bool>(qualifierName: InjectionConstants.darkMode);
 
     _isOpen = true;
     Alert(

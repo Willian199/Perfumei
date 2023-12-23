@@ -20,13 +20,16 @@ class GridPage extends StatefulWidget {
 class _GridPageState extends State<GridPage> {
   @override
   Widget build(BuildContext context) {
-    int crossAxisCount = 1;
-    final Size size = MediaQuery.of(context).size;
-    double childAspectRatio = size.height / size.width;
+    late int crossAxisCount;
+    late double childAspectRatio;
+    final Size size = MediaQuery.sizeOf(context);
 
-    if (MediaQuery.of(context).orientation == Orientation.landscape) {
+    if (MediaQuery.orientationOf(context) == Orientation.landscape) {
       crossAxisCount = 2;
       childAspectRatio = size.width / size.height;
+    } else {
+      crossAxisCount = 1;
+      childAspectRatio = size.height / size.width;
     }
 
     return GridView.builder(

@@ -27,7 +27,7 @@ class RemoveBackGround {
       }
 
       final croppedImage = img.copyCrop(image, x: 0, y: 0, width: image.width ~/ 1.9, height: image.height);
-      final transparentImage = _makeColorTransparent(croppedImage, 250, 250, 250);
+      final transparentImage = _makeColorTransparent(croppedImage, 249, 249, 249);
       return Uint8List.fromList(img.encodePng(transparentImage!));
     } catch (e) {
       throw Exception('Não foi possível fazer o decode da imagem');

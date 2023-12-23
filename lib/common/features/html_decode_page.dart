@@ -61,19 +61,34 @@ class HtmlDecodePage {
   }
 
   static Map<String, String> _processarNotasTopo(Node? node) {
-    final NodeList? nodeTopo = node?.nodes[2].nodes.first.nodes;
+    late NodeList? nodeTopo;
+    if ((node?.nodes.length ?? 0) > 2) {
+      nodeTopo = node?.nodes[2].nodes.first.nodes;
+    } else {
+      nodeTopo = node?.nodes[1].nodes.first.nodes;
+    }
 
     return _getItem(nodeTopo);
   }
 
   static Map<String, String> _processarNotasBase(Node? node) {
-    final NodeList? nodeBase = node?.nodes[6].nodes.first.nodes;
+    late NodeList? nodeBase;
+    if ((node?.nodes.length ?? 0) > 6) {
+      nodeBase = node?.nodes[6].nodes.first.nodes;
+    } else {
+      nodeBase = node?.nodes[1].nodes.first.nodes;
+    }
 
     return _getItem(nodeBase);
   }
 
   static Map<String, String> _processarNotasCoracao(Node? node) {
-    final NodeList? nodeCoracao = node?.nodes[4].nodes.first.nodes;
+    late NodeList? nodeCoracao;
+    if ((node?.nodes.length ?? 0) > 4) {
+      nodeCoracao = node?.nodes[4].nodes.first.nodes;
+    } else {
+      nodeCoracao = node?.nodes[1].nodes.first.nodes;
+    }
 
     return _getItem(nodeCoracao);
   }

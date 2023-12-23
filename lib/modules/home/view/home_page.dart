@@ -137,7 +137,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
               Observer(builder: (_) {
                 return Container(
                   padding: const EdgeInsets.only(left: 10, bottom: 10, right: 18),
-                  width: MediaQuery.of(context).size.width,
+                  width: MediaQuery.sizeOf(context).width,
                   child: SegmentedButton<Genero>(
                     segments: <ButtonSegment<Genero>>[
                       _makeSegmentedButton(Genero.TODOS),
