@@ -3,12 +3,11 @@ import 'dart:async';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:perfumei/page/home/home_page.dart';
-import 'package:perfumei/page/util/services/injection.dart';
-import 'package:perfumei/theme/light.dart';
+import 'package:perfumei/config/services/injection.dart';
+import 'package:perfumei/config/theme/light.dart';
+import 'package:perfumei/modules/home/view/home_page.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
 
-final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -27,7 +26,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Perfumei',
-      navigatorKey: navigatorKey,
+      navigatorKey: ddi(),
       debugShowCheckedModeBanner: false,
       //Git Request to make it default
       theme: LigthTheme.getTheme(),
@@ -51,7 +50,7 @@ class MyApp extends StatelessWidget {
       ),
       // If you do not have a themeMode switch, uncomment this line
       // to let the device system mode control the theme mode:
-      themeMode: ThemeMode.light,
+      //themeMode: ThemeMode.system,
       home: const HomePage(),
     );
   }
