@@ -1,4 +1,4 @@
-import 'package:dart_ddi/dart_di.dart';
+import 'package:dart_ddi/dart_ddi.dart';
 import 'package:flutter/material.dart';
 import 'package:perfumei/common/model/layout.dart';
 
