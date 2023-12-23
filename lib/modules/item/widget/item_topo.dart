@@ -1,23 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:perfumei/common/model/grid_model.dart';
-import 'package:perfumei/modules/item/mobx/item_mobx.dart';
 import 'package:perfumei/modules/item/widget/descricao.dart';
 import 'package:perfumei/modules/item/widget/imagem_perfume.dart';
 
 class ItemTopo extends StatelessWidget {
-  const ItemTopo({required this.controller, required this.item, super.key});
-  final ObservableItem controller;
+  const ItemTopo({required this.item, super.key});
+
   final GridModel item;
 
   @override
   Widget build(BuildContext context) {
     final ThemeData tema = Theme.of(context);
     final double width = MediaQuery.of(context).size.width - 140;
+
     return SizedBox(
       height: 500,
       child: Stack(
         children: [
-          ImagemPerfume(controller: controller),
+          const ImagemPerfume(),
           Positioned(
             left: 0,
             top: 60,
@@ -80,9 +80,7 @@ class ItemTopo extends StatelessWidget {
                   Container(
                     padding: const EdgeInsets.only(top: 20),
                     width: width - 80,
-                    child: Descricao(
-                      controller: controller,
-                    ),
+                    child: const Descricao(),
                   ),
                 ],
               ),

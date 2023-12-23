@@ -10,6 +10,7 @@ import 'package:perfumei/common/components/widgets/degrade.dart';
 import 'package:perfumei/common/enum/genero_enum.dart';
 import 'package:perfumei/common/extensions/image_provider_extension.dart';
 import 'package:perfumei/common/model/grid_model.dart';
+import 'package:perfumei/config/services/injection.dart';
 import 'package:perfumei/modules/home/mobx/home_mobx.dart';
 import 'package:perfumei/modules/home/widgets/grid_page.dart';
 import 'package:perfumei/modules/item/view/item_page.dart';
@@ -24,7 +25,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   late AnimationController _animationController;
 
-  final ObservableHome _controller = ObservableHome();
+  final ObservableHome _controller = ddi();
 
   @override
   void initState() {
@@ -36,14 +37,14 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     );
 
     Future.delayed(const Duration(milliseconds: 1), () {
-      _controller.carregarDados(context);
+      _controller.carregarDados();
     });
   }
 
   @override
   void dispose() {
-    super.dispose();
     _animationController.dispose();
+    super.dispose();
   }
 
   ButtonSegment<Genero> _makeSegmentedButton(Genero genero) {
@@ -99,7 +100,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                         ),
                         onChanged: _controller.changePesquisa,
                         onFinish: () {
-                          _controller.carregarDados(context);
+                          _controller.carregarDados();
                         },
                       ),
                     ),
@@ -147,7 +148,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                     selected: _controller.tabSelecionada,
                     onSelectionChanged: (value) {
                       _controller.changeTabSelecionada(value);
-                      _controller.carregarDados(context);
+                      _controller.carregarDados();
                     },
                     showSelectedIcon: false,
                   ),
@@ -155,9 +156,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
               }),
               Expanded(
                 child: Observer(builder: (_) {
-                  if (_controller.dados == null) {
-                    return const SizedBox();
-                  } else if (_controller.dados?.isEmpty ?? false) {
+                  if (_controller.dados?.isEmpty ?? true) {
                     return Center(
                       child: Lottie.asset(
                         "assets/desert.json",

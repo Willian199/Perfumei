@@ -33,7 +33,7 @@ abstract class _ObservableHomeBase with Store {
     pesquisaFocus.unfocus();
   }
 
-  void carregarDados(context) async {
+  void carregarDados() async {
     pesquisaFocus.unfocus();
     NotificacaoPadrao.carregando();
 

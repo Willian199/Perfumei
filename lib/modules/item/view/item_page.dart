@@ -5,6 +5,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:perfumei/common/components/notification/notificacao_padrao.dart';
 import 'package:perfumei/common/enum/notas_enum.dart';
 import 'package:perfumei/common/model/grid_model.dart';
+import 'package:perfumei/config/services/injection.dart';
 import 'package:perfumei/modules/item/mobx/item_mobx.dart';
 import 'package:perfumei/modules/item/widget/item_nota.dart';
 import 'package:perfumei/modules/item/widget/item_topo.dart';
@@ -19,7 +20,7 @@ class ItemPage extends StatefulWidget {
 }
 
 class _ItemPageState extends State<ItemPage> {
-  final ObservableItem _observableItem = ObservableItem();
+  final ObservableItem _observableItem = ddi();
 
   @override
   void initState() {
@@ -28,7 +29,7 @@ class _ItemPageState extends State<ItemPage> {
     Future.delayed(Duration.zero, () {
       NotificacaoPadrao.carregando();
       _observableItem.carregarHtml(widget.item.link);
-      _observableItem.carregarImagem(context, widget.bytes);
+      _observableItem.carregarImagem(widget.bytes);
     });
   }
 
@@ -36,6 +37,7 @@ class _ItemPageState extends State<ItemPage> {
   void dispose() {
     super.dispose();
 
+    ddi.dispose<ObservableItem>();
     _observableItem.clear();
   }
 
@@ -83,7 +85,6 @@ class _ItemPageState extends State<ItemPage> {
           child: Column(
             children: [
               ItemTopo(
-                controller: _observableItem,
                 item: widget.item,
               ),
               Observer(builder: (_) {

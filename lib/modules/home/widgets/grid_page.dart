@@ -19,11 +19,6 @@ class GridPage extends StatefulWidget {
 
 class _GridPageState extends State<GridPage> {
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     int crossAxisCount = 1;
     final Size size = MediaQuery.of(context).size;

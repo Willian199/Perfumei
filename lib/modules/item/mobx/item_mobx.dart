@@ -5,9 +5,8 @@ import 'package:perfumei/common/components/notification/notificacao.dart';
 import 'package:perfumei/common/enum/notas_enum.dart';
 import 'package:perfumei/common/features/html_decode_page.dart';
 import 'package:perfumei/common/features/remove_background.dart';
-import 'package:perfumei/config/services/dio/request_service.dart';
-
 import 'package:perfumei/common/model/dados_perfume.dart';
+import 'package:perfumei/config/services/dio/request_service.dart';
 
 part 'item_mobx.g.dart';
 
@@ -96,7 +95,7 @@ abstract class _ObservableItemBase with Store {
     notasBase = perfume.notasBase;
   }
 
-  void carregarImagem(BuildContext context, Uint8List? bytes) async {
+  void carregarImagem(Uint8List? bytes) async {
     imagem = await compute(RemoveBackGround.removeWhiteBackground, bytes);
 
     Notificacao.close();

@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:perfumei/common/components/widgets/slide_animation.dart';
+import 'package:perfumei/config/services/injection.dart';
 import 'package:perfumei/modules/item/mobx/item_mobx.dart';
 
 class ImagemPerfume extends StatelessWidget {
-  const ImagemPerfume({required this.controller, super.key});
-  final ObservableItem controller;
+  const ImagemPerfume({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final ObservableItem controller = ddi();
     return Observer(builder: (_) {
       if (controller.imagem?.isNotEmpty ?? false) {
         return Positioned(
