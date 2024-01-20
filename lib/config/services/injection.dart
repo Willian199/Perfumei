@@ -14,17 +14,22 @@ final DDI ddi = DDI.instance;
 
 class Injection {
   static Future<void> start() async {
-    ddi.registerSingleton<String>(() => 'https://fgvi612dfz-dsn.algolia.net', qualifierName: InjectionConstants.url);
+    ddi.registerObject<String>('https://fgvi612dfz-dsn.algolia.net',
+        qualifier: InjectionConstants.url);
 
-    ddi.registerSingleton<GlobalKey<NavigatorState>>(() => GlobalKey<NavigatorState>());
+    ddi.registerSingleton<GlobalKey<NavigatorState>>(
+        () => GlobalKey<NavigatorState>());
 
-    ddi.registerApplication<bool>(() => WidgetsBinding.instance.platformDispatcher.platformBrightness == Brightness.dark,
-        qualifierName: InjectionConstants.darkMode);
+    ddi.registerObject<bool>(
+        WidgetsBinding.instance.platformDispatcher.platformBrightness ==
+            Brightness.dark,
+        qualifier: InjectionConstants.darkMode);
 
     ddi.registerDependent<ObservableHome>(() => ObservableHome());
     ddi.registerApplication<ObservableItem>(() => ObservableItem());
 
     final Directory dir = await pp.getTemporaryDirectory();
-    ddi.registerSingleton<CacheStore>(() => ObjectBoxCacheStore(storePath: dir.path));
+    ddi.registerSingleton<CacheStore>(
+        () => ObjectBoxCacheStore(storePath: dir.path));
   }
 }

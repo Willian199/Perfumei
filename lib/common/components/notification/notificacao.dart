@@ -20,15 +20,17 @@ class Notificacao {
   }
 
   static AlertStyle _alertStyle() {
-    final ThemeData tema = Theme.of(ddi<GlobalKey<NavigatorState>>().currentContext!);
-    final bool darkMode = ddi.get(qualifierName: InjectionConstants.darkMode);
+    final ThemeData tema =
+        Theme.of(ddi<GlobalKey<NavigatorState>>().currentContext!);
+    final bool darkMode = ddi.get(qualifier: InjectionConstants.darkMode);
 
     return AlertStyle(
       constraints: const BoxConstraints(minHeight: 200),
       animationType: AnimationType.fromTop,
       isCloseButton: false,
       isOverlayTapDismiss: false,
-      backgroundColor: darkMode ? tema.colorScheme.onSecondary : tema.colorScheme.secondary,
+      backgroundColor:
+          darkMode ? tema.colorScheme.onSecondary : tema.colorScheme.secondary,
       animationDuration: const Duration(milliseconds: 300),
       overlayColor: tema.colorScheme.secondaryContainer.withOpacity(0.4),
       alertBorder: RoundedRectangleBorder(
@@ -51,12 +53,13 @@ class Notificacao {
       return;
     }
     if (mensagem == null || mensagem.isEmpty) {
-      mensagem = Mensagens.ERRO_PROCESSAR_SOLICITACAO;
+      mensagem = Mensagens.ERRO_PROCESSAR_REQUISICAO;
     }
     _isOpen = true;
 
-    final ThemeData tema = Theme.of(ddi<GlobalKey<NavigatorState>>().currentContext!);
-    final bool darkMode = ddi.get<bool>(qualifierName: InjectionConstants.darkMode);
+    final ThemeData tema =
+        Theme.of(ddi<GlobalKey<NavigatorState>>().currentContext!);
+    final bool darkMode = ddi.get<bool>(qualifier: InjectionConstants.darkMode);
 
     Alert(
       context: ddi<GlobalKey<NavigatorState>>().currentContext!,
@@ -125,7 +128,8 @@ class Notificacao {
 
     if (buttonDefault) {
       final ThemeData tema = Theme.of(context);
-      final bool darkMode = ddi.get<bool>(qualifierName: InjectionConstants.darkMode);
+      final bool darkMode =
+          ddi.get<bool>(qualifier: InjectionConstants.darkMode);
 
       buttons = [
         DialogButton(
@@ -187,8 +191,9 @@ class Notificacao {
       return;
     }
 
-    final ThemeData tema = Theme.of(ddi<GlobalKey<NavigatorState>>().currentContext!);
-    final bool darkMode = ddi.get<bool>(qualifierName: InjectionConstants.darkMode);
+    final ThemeData tema =
+        Theme.of(ddi<GlobalKey<NavigatorState>>().currentContext!);
+    final bool darkMode = ddi.get<bool>(qualifier: InjectionConstants.darkMode);
 
     _isOpen = true;
     Alert(
