@@ -26,7 +26,7 @@ class ItemPage extends StatefulWidget {
 
 class _ItemPageState extends State<ItemPage> with DDIInject<PerfumeCubit> {
   final TabCubit _tabCubit = ddi();
-  final Layout layout = ddi();
+  final Layout _layout = ddi();
 
   @override
   void dispose() {
@@ -51,7 +51,7 @@ class _ItemPageState extends State<ItemPage> with DDIInject<PerfumeCubit> {
         style: TextStyle(
           fontSize: 10,
           fontWeight: FontWeight.bold,
-          color: nota.posicao == tabSelecionada.first.posicao ? layout.segmentedButtonSelected : layout.segmentedButtonDeselected,
+          color: nota.posicao == tabSelecionada.first.posicao ? _layout.segmentedButtonSelected : _layout.segmentedButtonDeselected,
         ),
       ),
     );

@@ -35,7 +35,7 @@ class TabCubit extends Cubit<TabState> with PostConstruct {
   @override
   Future<void> close() async {
     debugPrint('Destruindo a stream page_view');
-    DDIStream.instance.close(qualifier: 'page_view');
+    ddiStream.close(qualifier: 'page_view');
     super.close();
   }
 }
