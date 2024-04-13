@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:perfumei/common/model/dados_perfume.dart';
-import 'package:perfumei/modules/item/cubit/perfume_cubit.dart';
+import 'package:perfumei/pages/item/cubit/perfume_cubit.dart';
+import 'package:perfumei/pages/item/state/perfume_state.dart';
 
 class Descricao extends StatelessWidget {
   const Descricao({super.key});
@@ -9,17 +9,16 @@ class Descricao extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     debugPrint('building Descricao');
-    return BlocBuilder<PerfumeCubit, DadosPerfume?>(
-      buildWhen: (previous, current) => previous?.descricao != current?.descricao,
-      builder: (_, DadosPerfume? state) {
-        if (state?.descricao.isEmpty ?? true) {
+    return BlocBuilder<PerfumeCubit, PerfumeState>(
+      builder: (_, PerfumeState state) {
+        if (state.dadosPerfume?.descricao.isEmpty ?? true) {
           return const SizedBox();
         }
         return AnimatedOpacity(
-          opacity: (state?.descricao.isEmpty ?? true) ? 0 : 1,
+          opacity: (state.dadosPerfume?.descricao.isEmpty ?? true) ? 0 : 1,
           duration: const Duration(milliseconds: 500),
           child: Text(
-            state?.descricao ?? '',
+            state.dadosPerfume?.descricao ?? '',
             style: TextStyle(
               fontWeight: FontWeight.w800,
               color: Theme.of(context).colorScheme.primary,

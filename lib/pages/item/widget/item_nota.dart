@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_ddi/flutter_ddi.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:perfumei/common/components/widgets/cache_image.dart';
 import 'package:perfumei/common/model/layout.dart';
-import 'package:perfumei/config/services/injection.dart';
 
 class ItemNota extends StatelessWidget {
   const ItemNota({required this.lista, super.key});
@@ -11,7 +11,7 @@ class ItemNota extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     debugPrint('building ItemNota');
-    final Layout layout = ddi<Layout>();
+    final Layout layout = context.get();
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10),
       child: Center(
@@ -38,23 +38,20 @@ class ItemNota extends StatelessWidget {
                         return Container(
                           height: 120,
                           width: 100,
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(50),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: layout.notaDownColor,
-                                  offset: const Offset(4, 4),
-                                  blurRadius: 15,
-                                  spreadRadius: 1,
-                                ),
-                                BoxShadow(
-                                  color: layout.notaUpColor,
-                                  offset: const Offset(-4, -4),
-                                  blurRadius: 15,
-                                  spreadRadius: 1,
-                                ),
-                              ]),
+                          decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(50), boxShadow: [
+                            BoxShadow(
+                              color: layout.notaDownColor,
+                              offset: const Offset(4, 4),
+                              blurRadius: 15,
+                              spreadRadius: 1,
+                            ),
+                            BoxShadow(
+                              color: layout.notaUpColor,
+                              offset: const Offset(-4, -4),
+                              blurRadius: 15,
+                              spreadRadius: 1,
+                            ),
+                          ]),
                           child: Center(
                             child: CircleAvatar(
                               backgroundImage: imageProvider,

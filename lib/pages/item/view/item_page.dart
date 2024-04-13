@@ -1,18 +1,19 @@
-import 'dart:typed_data';
+import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_ddi/flutter_ddi.dart';
 import 'package:perfumei/common/components/notification/notificacao_padrao.dart';
 import 'package:perfumei/common/enum/notas_enum.dart';
-import 'package:perfumei/common/model/dados_perfume.dart';
 import 'package:perfumei/common/model/grid_model.dart';
 import 'package:perfumei/common/model/layout.dart';
-import 'package:perfumei/config/services/injection.dart';
-import 'package:perfumei/modules/item/cubit/item_cubit.dart';
-import 'package:perfumei/modules/item/cubit/perfume_cubit.dart';
-import 'package:perfumei/modules/item/state/tab_state.dart';
-import 'package:perfumei/modules/item/widget/item_nota.dart';
-import 'package:perfumei/modules/item/widget/item_topo.dart';
+import 'package:perfumei/pages/item/cubit/perfume_cubit.dart';
+import 'package:perfumei/pages/item/cubit/tab_cubit.dart';
+import 'package:perfumei/pages/item/state/perfume_state.dart';
+import 'package:perfumei/pages/item/state/tab_state.dart';
+import 'package:perfumei/pages/item/widget/item_nota.dart';
+import 'package:perfumei/pages/item/widget/item_topo.dart';
 
 class ItemPage extends StatefulWidget {
   const ItemPage({required this.item, this.bytes, super.key});
@@ -23,11 +24,14 @@ class ItemPage extends StatefulWidget {
   State<ItemPage> createState() => _ItemPageState();
 }
 
-class _ItemPageState extends State<ItemPage> {
-  final TabCubit _itemCubit = ddi();
-  final PerfumeCubit _perfumeCubit = ddi();
+class _ItemPageState extends State<ItemPage> with DDIInject<PerfumeCubit> {
+  final TabCubit _tabCubit = ddi();
+  final Layout layout = ddi();
 
-  final Layout layout = ddi.get<Layout>();
+  @override
+  void dispose() {
+    super.dispose();
+  }
 
   @override
   void initState() {
@@ -35,7 +39,7 @@ class _ItemPageState extends State<ItemPage> {
 
     Future.delayed(Duration.zero, () {
       NotificacaoPadrao.carregando();
-      _perfumeCubit.carregarHtml(widget.item.link);
+      instance.carregarHtml(widget.item.link);
     });
   }
 
@@ -53,12 +57,17 @@ class _ItemPageState extends State<ItemPage> {
     );
   }
 
+  final PageController pageController = PageController(
+    initialPage: NotasEnum.TOPO.posicao,
+  );
+
   @override
   Widget build(BuildContext context) {
     debugPrint('building ItemPage');
 
     final double width = MediaQuery.sizeOf(context).width;
     final ThemeData tema = Theme.of(context);
+
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
@@ -82,16 +91,17 @@ class _ItemPageState extends State<ItemPage> {
         ),
         child: SingleChildScrollView(
           child: BlocProvider<PerfumeCubit>(
-            create: (_) => _perfumeCubit,
+            create: (_) => instance,
             child: Column(
               children: [
                 ItemTopo(
                   item: widget.item,
                   bytes: widget.bytes,
                 ),
-                BlocBuilder<PerfumeCubit, DadosPerfume?>(
-                  builder: (_, DadosPerfume? dadosPerfume) {
-                    if (dadosPerfume?.notasBase.isEmpty ?? true) {
+                BlocBuilder<PerfumeCubit, PerfumeState>(
+                  buildWhen: (previous, current) => previous.dadosPerfume != current.dadosPerfume,
+                  builder: (_, PerfumeState state) {
+                    if (state.dadosPerfume?.notasBase.isEmpty ?? true) {
                       return const SizedBox();
                     }
 
@@ -107,9 +117,8 @@ class _ItemPageState extends State<ItemPage> {
                         ),
                         width: width,
                         child: BlocProvider<TabCubit>(
-                          create: (_) => _itemCubit,
+                          create: (_) => _tabCubit,
                           child: BlocBuilder<TabCubit, TabState>(
-                            buildWhen: (previous, current) => previous.tabSelecionada != current.tabSelecionada,
                             builder: (_, TabState state) {
                               return SegmentedButton<NotasEnum>(
                                 segments: <ButtonSegment<NotasEnum>>[
@@ -118,8 +127,10 @@ class _ItemPageState extends State<ItemPage> {
                                   _makeSegmentedButton(NotasEnum.BASE, state.tabSelecionada),
                                 ],
                                 selected: state.tabSelecionada,
-                                onSelectionChanged: (value) {
-                                  _itemCubit.changeTabSelecionada(value);
+                                onSelectionChanged: (Set<NotasEnum> value) {
+                                  _tabCubit.changeTabSelecionada(value);
+                                  pageController.animateToPage(value.first.posicao,
+                                      duration: const Duration(milliseconds: 300), curve: Curves.fastOutSlowIn);
                                 },
                                 showSelectedIcon: false,
                               );
@@ -135,15 +146,18 @@ class _ItemPageState extends State<ItemPage> {
                   child: SizedBox(
                     width: width,
                     height: 210,
-                    child: BlocBuilder<PerfumeCubit, DadosPerfume?>(
-                      builder: (_, DadosPerfume? dadosPerfume) {
+                    child: BlocBuilder<PerfumeCubit, PerfumeState>(
+                      buildWhen: (previous, current) => previous.dadosPerfume != current.dadosPerfume,
+                      builder: (_, PerfumeState state) {
                         return PageView(
-                          controller: _itemCubit.pageController,
-                          onPageChanged: _itemCubit.pageChange,
+                          controller: pageController,
+                          onPageChanged: (int page) {
+                            ddiStream.fire<int>(value: page, qualifier: 'page_view');
+                          },
                           children: [
-                            ItemNota(lista: dadosPerfume?.notasTopo),
-                            ItemNota(lista: dadosPerfume?.notasCoracao),
-                            ItemNota(lista: dadosPerfume?.notasBase),
+                            ItemNota(lista: state.dadosPerfume?.notasTopo),
+                            ItemNota(lista: state.dadosPerfume?.notasCoracao),
+                            ItemNota(lista: state.dadosPerfume?.notasBase),
                           ],
                         );
                       },

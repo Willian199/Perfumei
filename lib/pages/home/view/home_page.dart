@@ -3,6 +3,8 @@ import 'dart:ui';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_ddi/flutter_ddi.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 import 'package:perfumei/common/components/fields/alpha_numeric_field.dart';
@@ -10,11 +12,11 @@ import 'package:perfumei/common/components/widgets/degrade.dart';
 import 'package:perfumei/common/enum/genero_enum.dart';
 import 'package:perfumei/common/extensions/image_provider_extension.dart';
 import 'package:perfumei/common/model/grid_model.dart';
-import 'package:perfumei/config/services/injection.dart';
-import 'package:perfumei/modules/home/cubit/home_cubit.dart';
-import 'package:perfumei/modules/home/state/home_state.dart';
-import 'package:perfumei/modules/home/widgets/grid_page.dart';
-import 'package:perfumei/modules/item/view/item_page.dart';
+import 'package:perfumei/pages/home/cubit/home_cubit.dart';
+import 'package:perfumei/pages/home/state/home_state.dart';
+import 'package:perfumei/pages/home/widgets/grid_page.dart';
+import 'package:perfumei/pages/item/module/item_module.dart';
+import 'package:perfumei/pages/item/view/item_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -23,10 +25,11 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
+class _HomePageState extends State<HomePage> with TickerProviderStateMixin, DDIInject<HomeCubit> {
   late AnimationController _animationController;
 
-  final HomeCubit _controller = ddi();
+  TextEditingController pesquisaController = TextEditingController();
+  FocusNode pesquisaFocus = FocusNode();
 
   @override
   void initState() {
@@ -37,8 +40,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       duration: const Duration(milliseconds: 450),
     );
 
-    Future.delayed(const Duration(milliseconds: 1), () {
-      _controller.carregarDados();
+    Future.delayed(Duration.zero, () {
+      FlutterNativeSplash.remove();
     });
   }
 
@@ -78,7 +81,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         ]),
         child: SafeArea(
           child: BlocProvider<HomeCubit>(
-            create: (_) => _controller,
+            create: (_) => instance,
             child: Column(
               children: [
                 Container(
@@ -91,19 +94,20 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                     children: [
                       Expanded(
                         child: AlphaNumericField(
-                          controller: _controller.pesquisaController,
-                          focus: _controller.pesquisaFocus,
+                          controller: pesquisaController,
+                          focus: pesquisaFocus,
                           cursorColor: tema.colorScheme.primary,
                           textStyle: TextStyle(color: tema.colorScheme.primary),
                           decoration: const InputDecoration(
                             prefixIcon: Icon(
                               Icons.search,
                             ),
-                            hintText: ' Pesquisa...',
+                            hintText: 'Pesquisa...',
                           ),
-                          onChanged: _controller.changePesquisa,
+                          onChanged: instance.changePesquisa,
                           onFinish: () {
-                            _controller.carregarDados();
+                            pesquisaFocus.unfocus();
+                            instance.carregarDados();
                           },
                         ),
                       ),
@@ -152,8 +156,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                         ],
                         selected: state.tabSelecionada,
                         onSelectionChanged: (value) {
-                          _controller.changeTabSelecionada(value);
-                          _controller.carregarDados();
+                          pesquisaFocus.unfocus();
+                          instance.changeTabSelecionada(value);
+                          instance.carregarDados();
                         },
                         showSelectedIcon: false,
                       ),
@@ -164,7 +169,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                   child: BlocBuilder<HomeCubit, HomeState>(
                     buildWhen: (previous, current) => previous.dataChange != current.dataChange,
                     builder: (_, HomeState state) {
-                      if (_controller.dados?.isEmpty ?? true) {
+                      if (instance.dados?.isEmpty ?? true) {
                         return Center(
                           child: Lottie.asset(
                             "assets/desert.json",
@@ -173,12 +178,12 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                             frameRate: FrameRate.max,
                           ),
                         );
-                      } else {
-                        return GridPage(
-                          dados: _controller.dados!,
-                          onPressed: _abrirItem,
-                        );
                       }
+
+                      return GridPage(
+                        dados: instance.dados!,
+                        onPressed: _abrirItem,
+                      );
                     },
                   ),
                 ),
@@ -194,12 +199,20 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     final ImageProvider provider = CachedNetworkImageProvider(itemSelecionado.capa);
 
     provider.getBytes(format: ImageByteFormat.png).then((bytes) {
-      Navigator.push(context, MaterialPageRoute(builder: (_) {
-        return ItemPage(
-          item: itemSelecionado,
-          bytes: bytes,
-        );
-      }));
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) {
+            return FlutterDDIWidget(
+              module: ItemModule.new,
+              child: ItemPage(
+                item: itemSelecionado,
+                bytes: bytes,
+              ),
+            );
+          },
+        ),
+      );
     });
   }
 }

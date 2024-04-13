@@ -1,17 +1,22 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_ddi/flutter_ddi.dart';
 import 'package:perfumei/common/components/notification/notificacao.dart';
 import 'package:perfumei/common/components/notification/notificacao_padrao.dart';
 import 'package:perfumei/common/enum/genero_enum.dart';
 import 'package:perfumei/config/services/dio/request_service.dart';
-import 'package:perfumei/modules/home/state/home_state.dart';
+import 'package:perfumei/pages/home/state/home_state.dart';
 
-class HomeCubit extends Cubit<HomeState> {
+class HomeCubit extends Cubit<HomeState> with PostConstruct {
   HomeCubit() : super(HomeState(tabSelecionada: {Genero.TODOS}));
-  TextEditingController pesquisaController = TextEditingController();
-  FocusNode pesquisaFocus = FocusNode();
 
   List? dados;
+
+  @override
+  void onPostConstruct() {
+    Future.delayed(const Duration(milliseconds: 1), () {
+      carregarDados();
+    });
+  }
 
   void changePesquisa(String value) {
     emit(state.copyWith(pesquisa: value));
@@ -19,11 +24,9 @@ class HomeCubit extends Cubit<HomeState> {
 
   void changeTabSelecionada(Set<Genero> value) {
     emit(state.copyWith(tabSelecionada: value));
-    pesquisaFocus.unfocus();
   }
 
-  void carregarDados() async {
-    pesquisaFocus.unfocus();
+  Future<void> carregarDados() async {
     NotificacaoPadrao.carregando();
 
     const String attributesToRetrieve = '["naslov","dizajner","godina","url.PT","rating","spol"]';
@@ -53,7 +56,7 @@ class HomeCubit extends Cubit<HomeState> {
 
     const String applicationId = 'FGVI612DFZ';
     const String applicatinoKey =
-        'MzM1YmRkM2RhNjllNzU5YmEyMmFjNjA0MGZmOWMwNzk1MzYwNWYwOTg4ZThkNDM1NDM0MWM2ODk4OTQxMjZkYnZhbGlkVW50aWw9MTcwNjY0MjAwNg==';
+        'NzRkMzEzMzJkOWZkZGNkMjZhYzNhYmI5M2M2Njg5ZTgxODg4ZWNhODVjMzIxNDhhYmU2NGI1MzA5OGMzNTAxNnZhbGlkVW50aWw9MTcxMzkxNDIzNw==';
 
     final retorno = await RequestService.post(
         url: '/1/indexes/*/queries?x-algolia-api-key=$applicatinoKey&x-algolia-application-id=$applicationId',
@@ -68,9 +71,8 @@ class HomeCubit extends Cubit<HomeState> {
 
     emit(state.copyWith(dataChange: !state.dataChange));
 
-    Future.delayed(const Duration(seconds: 1), () {
+    Future.delayed(const Duration(milliseconds: 500), () {
       Notificacao.close();
-      pesquisaFocus.unfocus();
     });
   }
 }

@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:dio_cache_interceptor/dio_cache_interceptor.dart';
-import 'package:perfumei/config/services/injection.dart';
+import 'package:flutter_ddi/flutter_ddi.dart';
 import 'package:uuid/uuid.dart';
 
 class DioCacheOptions {
@@ -24,15 +24,14 @@ class DioCacheOptions {
     Future<List<int>> encode(List<int> valor) {
       const HtmlEscape sanitizer = HtmlEscape(HtmlEscapeMode.element);
 
-      return Future.value(
-          latin1.encode(sanitizer.convert(base64Url.encode(valor))));
+      return Future.value(latin1.encode(sanitizer.convert(base64Url.encode(valor))));
     }
 
     final CacheCipher cipher = CacheCipher(decrypt: decode, encrypt: encode);
 
     final CacheOptions options = CacheOptions(
       // A default store is required for interceptor.
-      store: ddi(),
+      store: await ddi.getAsync<CacheStore>(),
       // Returns a cached response on error but for statuses 401 & 403.
       // Also allows to return a cached response on network errors (e.g. offline usage).
       // Defaults to [null].
