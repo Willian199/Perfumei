@@ -48,20 +48,16 @@ class LigthTheme {
     fontFamily: GoogleFonts.montserrat().fontFamily,
   );
 
-  static Color _getColorSegmentedButton(Set<MaterialState> states) {
-    const Set<MaterialState> interactiveStates = <MaterialState>{
-      MaterialState.selected
-    };
+  static Color _getColorSegmentedButton(Set<WidgetState> states) {
+    const Set<WidgetState> interactiveStates = <WidgetState>{WidgetState.selected};
     if (states.any(interactiveStates.contains)) {
       return _default.colorScheme.secondary;
     }
     return _default.colorScheme.onPrimary;
   }
 
-  static Color _getColorSegmentedButtonIcon(Set<MaterialState> states) {
-    const Set<MaterialState> interactiveStates = <MaterialState>{
-      MaterialState.selected
-    };
+  static Color _getColorSegmentedButtonIcon(Set<WidgetState> states) {
+    const Set<WidgetState> interactiveStates = <WidgetState>{WidgetState.selected};
     if (states.any(interactiveStates.contains)) {
       return _default.colorScheme.onPrimary;
     }
@@ -69,13 +65,9 @@ class LigthTheme {
   }
 
   static void _registerLayout() {
-    final baseTextStyle =
-        TextStyle(fontFamily: GoogleFonts.montserrat().fontFamily);
+    final baseTextStyle = TextStyle(fontFamily: GoogleFonts.montserrat().fontFamily);
 
-    final itemsTextStyle = baseTextStyle.copyWith(
-        color: _default.colorScheme.onPrimary,
-        fontSize: 12,
-        fontWeight: FontWeight.w400);
+    final itemsTextStyle = baseTextStyle.copyWith(color: _default.colorScheme.onPrimary, fontSize: 12, fontWeight: FontWeight.w400);
 
     final subTituloTextStyle = itemsTextStyle.copyWith(fontSize: 12);
 
@@ -85,26 +77,29 @@ class LigthTheme {
       fontWeight: FontWeight.w600,
     );
 
-    ddi.registerObject<Layout>(
-      Layout(
-        cardDegradeColors: [
-          const Color(0xff00F6ff),
-          const Color(0xFF436AB7),
-          _default.colorScheme.primary
-        ],
-        baseTextStyle: baseTextStyle,
-        itemsTextStyle: itemsTextStyle,
-        subTituloTextStyle: subTituloTextStyle,
-        tituloTextStyle: tituloTextStyle,
-        cardBackgroundColor: _default.colorScheme.primary,
-        onPrimary: _default.colorScheme.onPrimary,
-        segmentedButtonSelected: _default.colorScheme.onPrimary,
-        segmentedButtonDeselected: _default.colorScheme.primary,
-        notaDownColor: _default.colorScheme.onPrimaryContainer,
-        notaUpColor: _default.colorScheme.primaryContainer,
-      ),
-      registerIf: () => !ddi.get<bool>(qualifier: InjectionConstants.darkMode),
+    final layout = Layout(
+      cardDegradeColors: [const Color(0xff00F6ff), const Color(0xFF436AB7), _default.colorScheme.primary],
+      baseTextStyle: baseTextStyle,
+      itemsTextStyle: itemsTextStyle,
+      subTituloTextStyle: subTituloTextStyle,
+      tituloTextStyle: tituloTextStyle,
+      cardBackgroundColor: _default.colorScheme.primary,
+      onPrimary: _default.colorScheme.onPrimary,
+      segmentedButtonSelected: _default.colorScheme.onPrimary,
+      segmentedButtonDeselected: _default.colorScheme.primary,
+      notaDownColor: _default.colorScheme.onPrimaryContainer,
+      notaUpColor: _default.colorScheme.primaryContainer,
     );
+
+    // Usado refresh pois ao salvar alteração de código, é rebuildado todo o app, gerando erro de Bean duplicado.
+    if (ddi.isRegistered<Layout>()) {
+      ddi.refreshObject<Layout>(layout);
+    } else {
+      ddi.registerObject<Layout>(
+        layout,
+        registerIf: () => !ddi.get<bool>(qualifier: InjectionConstants.darkMode),
+      );
+    }
   }
 
   static ThemeData getTheme() {
@@ -113,10 +108,8 @@ class LigthTheme {
     return _default.copyWith(
       segmentedButtonTheme: _default.segmentedButtonTheme.copyWith(
         style: ButtonStyle(
-          backgroundColor:
-              MaterialStateProperty.resolveWith(_getColorSegmentedButton),
-          iconColor:
-              MaterialStateProperty.resolveWith(_getColorSegmentedButtonIcon),
+          backgroundColor: WidgetStateProperty.resolveWith(_getColorSegmentedButton),
+          iconColor: WidgetStateProperty.resolveWith(_getColorSegmentedButtonIcon),
           animationDuration: const Duration(seconds: 2),
         ),
       ),

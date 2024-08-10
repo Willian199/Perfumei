@@ -20,16 +20,13 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: '>=3.0.0 <4.0.0'
+  sdk: '>=3.4.0 <4.0.0'
 
 
 dependencies:
   flutter:
     sdk: flutter
 
-  # The following adds the Cupertino Icons font to your application.
-  # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^1.0.2
   flex_color_scheme: ^7.3.1                         #Controla o tema do aplicativo
   lottie: ^3.0.0                                    #Animações
   wakelock_plus: ^1.1.4                             #Para manter a Tela ligada
@@ -49,7 +46,7 @@ dependencies:
   uuid: ^4.3.3
   path_provider: ^2.1.2
   rflutter_alert: ^2.0.7
-  flutter_ddi: ^0.1.0
+  flutter_ddi: ^0.2.0
   flutter_native_splash: ^2.4.0
 
 dev_dependencies:
