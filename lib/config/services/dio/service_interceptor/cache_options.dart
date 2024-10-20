@@ -59,6 +59,6 @@ class DioCacheOptions {
       key += request.data!.toString();
     }
 
-    return uuid.v5(Uuid.NAMESPACE_URL, key);
+    return uuid.v5(Namespace.url.value, key);
   }
 }
