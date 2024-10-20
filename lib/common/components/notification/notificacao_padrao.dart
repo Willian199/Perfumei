@@ -49,7 +49,7 @@ class NotificacaoPadrao {
   }
 
   static void carregando() {
-    final BuildContext context = ddi<GlobalKey<NavigatorState>>().currentContext!;
+    final BuildContext context = ddi.get<GlobalKey<NavigatorState>>().currentContext!;
     final ThemeData tema = Theme.of(context);
 
     Notificacao.vazia(
@@ -90,7 +90,7 @@ class NotificacaoPadrao {
   }) {
     Notificacao.close();
 
-    final BuildContext context = ddi<GlobalKey<NavigatorState>>().currentContext!;
+    final BuildContext context = ddi.get<GlobalKey<NavigatorState>>().currentContext!;
 
     final ThemeData tema = Theme.of(context);
     final bool darkMode = ddi.get(qualifier: InjectionConstants.darkMode);

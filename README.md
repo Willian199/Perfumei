@@ -1,16 +1,28 @@
-# perfumei
+# Perfumei
 
-A new Flutter project.
+**Perfumei** é um aplicativo desenvolvido em Flutter que facilita a busca e filtragem de perfumes de várias marcas. O aplicativo permite que os usuários explorem perfumes de diferentes gêneros e apliquem filtros personalizados.
 
-## Getting Started
+## Funcionalidades
 
-This project is a starting point for a Flutter application.
+- Pesquisar perfumes por nome.
+- Filtrar perfumes por gênero: masculino, feminino e unissex.
+- Exibir detalhes dos perfumes, como marca, gênero, ano de lançamento e avaliações.
 
-A few resources to get you started if this is your first Flutter project:
+## Tecnologias Utilizadas
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+O projeto foi desenvolvido utlizando o Flutter.
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Principais packages utilizados:
+- Bloc
+- Dio
+- Objectbox
+- Flutter DDI e Dart DDI
+- Lottie
+
+## Screenshots
+
+
+
+## Licença
+
+Este projeto é licenciado sob os termos da [Apache License](./LICENSE).

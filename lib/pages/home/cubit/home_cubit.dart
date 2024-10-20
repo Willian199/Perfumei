@@ -56,7 +56,7 @@ class HomeCubit extends Cubit<HomeState> with PostConstruct {
 
     const String applicationId = 'FGVI612DFZ';
     const String applicatinoKey =
-        'YWE1NDE1N2NmYTEzZDRiYWM5ODQzYmUyZGY5NmY3MjdkNzhhYmM3NjNiMjM1M2I2MzY3MTQwOWNmNTgxYzNiMnZhbGlkVW50aWw9MTcyNDE3NjIwOA==';
+        'MGY2YjQ5MzgzNGZjMDVlMDBmMjY3ZDIzZmQzOGNkNjc4MDEyMmU5NTVhMDhjZGU1YmJlYzBjMGNhZDZhMDY2ZHZhbGlkVW50aWw9MTczMDI1MDMyMA==';
 
     final retorno = await RequestService.post(
         url: '/1/indexes/*/queries?x-algolia-api-key=$applicatinoKey&x-algolia-application-id=$applicationId',

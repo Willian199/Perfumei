@@ -195,7 +195,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin, DDII
     );
   }
 
-  void _abrirItem(GridModel itemSelecionado) async {
+  void _abrirItem(GridModel itemSelecionado) {
     final ImageProvider provider = CachedNetworkImageProvider(itemSelecionado.capa);
 
     provider.getBytes(format: ImageByteFormat.png).then((bytes) {
@@ -203,9 +203,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin, DDII
         context,
         MaterialPageRoute(
           builder: (_) {
-            return FlutterDDIWidget(
+            return FlutterDDIBuilder(
               module: ItemModule.new,
-              child: ItemPage(
+              child: (_) => ItemPage(
                 item: itemSelecionado,
                 bytes: bytes,
               ),

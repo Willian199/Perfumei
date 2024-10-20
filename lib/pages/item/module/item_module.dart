@@ -10,8 +10,10 @@ class ItemModule with DDIModule {
   @override
   FutureOr<void> onPostConstruct() {
     debugPrint('criando module');
-    registerApplication(TabCubit.new);
-    registerApplication(PerfumeCubit.new);
-    registerApplication(ImagemCubit.new);
+    Future.wait([
+      registerApplication(TabCubit.new),
+      registerApplication(PerfumeCubit.new),
+      registerApplication(ImagemCubit.new),
+    ]);
   }
 }

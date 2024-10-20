@@ -14,13 +14,13 @@ class Notificacao {
 
   static void close() {
     if (_isOpen) {
-      Navigator.pop(ddi<GlobalKey<NavigatorState>>().currentContext!);
+      Navigator.pop(ddi.get<GlobalKey<NavigatorState>>().currentContext!);
     }
     _isOpen = false;
   }
 
   static AlertStyle _alertStyle() {
-    final ThemeData tema = Theme.of(ddi<GlobalKey<NavigatorState>>().currentContext!);
+    final ThemeData tema = Theme.of(ddi.get<GlobalKey<NavigatorState>>().currentContext!);
     final bool darkMode = ddi.get(qualifier: InjectionConstants.darkMode);
 
     return AlertStyle(
@@ -55,11 +55,11 @@ class Notificacao {
     }
     _isOpen = true;
 
-    final ThemeData tema = Theme.of(ddi<GlobalKey<NavigatorState>>().currentContext!);
+    final ThemeData tema = Theme.of(ddi.get<GlobalKey<NavigatorState>>().currentContext!);
     final bool darkMode = ddi.get<bool>(qualifier: InjectionConstants.darkMode);
 
     Alert(
-      context: ddi<GlobalKey<NavigatorState>>().currentContext!,
+      context: ddi.get<GlobalKey<NavigatorState>>().currentContext!,
       type: AlertType.error,
       title: Mensagens.ERRO,
       desc: mensagem,
@@ -96,7 +96,7 @@ class Notificacao {
 
     _isOpen = true;
     Alert(
-      context: ddi<GlobalKey<NavigatorState>>().currentContext!,
+      context: ddi.get<GlobalKey<NavigatorState>>().currentContext!,
       type: AlertType.none,
       onWillPopActive: true,
       title: Mensagens.CARREGANDO,
@@ -187,12 +187,12 @@ class Notificacao {
       return;
     }
 
-    final ThemeData tema = Theme.of(ddi<GlobalKey<NavigatorState>>().currentContext!);
+    final ThemeData tema = Theme.of(ddi.get<GlobalKey<NavigatorState>>().currentContext!);
     final bool darkMode = ddi.get<bool>(qualifier: InjectionConstants.darkMode);
 
     _isOpen = true;
     Alert(
-      context: ddi<GlobalKey<NavigatorState>>().currentContext!,
+      context: ddi.get<GlobalKey<NavigatorState>>().currentContext!,
       type: AlertType.success,
       title: title,
       onWillPopActive: true,

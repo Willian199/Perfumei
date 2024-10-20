@@ -12,14 +12,13 @@ import 'package:perfumei/pages/home/cubit/home_cubit.dart';
 class HomeModule with DDIModule {
   @override
   Future<void> onPostConstruct() async {
-    ddi.registerObject<String>('https://fgvi612dfz-dsn.algolia.net', qualifier: InjectionConstants.url);
-
-    ddi.registerSingleton<GlobalKey<NavigatorState>>(() => GlobalKey<NavigatorState>());
-
-    ddi.registerObject<bool>(WidgetsBinding.instance.platformDispatcher.platformBrightness == Brightness.dark,
-        qualifier: InjectionConstants.darkMode);
-
-    ddi.registerDependent<HomeCubit>(HomeCubit.new);
+    Future.wait([
+      ddi.registerObject<String>('https://fgvi612dfz-dsn.algolia.net', qualifier: InjectionConstants.url),
+      ddi.registerSingleton<GlobalKey<NavigatorState>>(() => GlobalKey<NavigatorState>()),
+      ddi.registerObject<bool>(WidgetsBinding.instance.platformDispatcher.platformBrightness == Brightness.dark,
+          qualifier: InjectionConstants.darkMode),
+      ddi.registerDependent<HomeCubit>(HomeCubit.new),
+    ]);
 
     await ddi.registerSingleton<CacheStore>(() async {
       final Directory dir = await pp.getTemporaryDirectory();
